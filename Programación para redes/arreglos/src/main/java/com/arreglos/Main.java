@@ -17,10 +17,8 @@ public class Main {
         int [] numeros= new int[4];
         numeros[1] = 15;
         System.out.println(numeros[0]);
-
         boolean [] boleanos= {true, false, true, false};
         boleanos[2]=true;
-
         for (int i = 0; i < numeros.length; i++) {
             System.out.println("en el valor de "+ (i+1)+" está: "+ numeros[i]);
         }
@@ -55,7 +53,6 @@ public class Main {
         }
         System.out.println(suma);
     }
-
 
     //TODO: Tarea (de aqui pa abajo)
     private static void SumaNumeros(){
