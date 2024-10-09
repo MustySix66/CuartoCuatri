@@ -132,6 +132,3 @@ public class Main {
         }
     }
 }
-
-
-// a rico
