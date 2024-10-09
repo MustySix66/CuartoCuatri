@@ -7,6 +7,9 @@ public class Main {
         MaxMin();
         Inversion();
         Palindromo();
+        prueba();
+        NumPares();
+        SumNumPares();
     }
 
     //TODO: Practicas del maestro
