@@ -1,0 +1,66 @@
+-----Pasos tomados al instalar un servidor-----
+
+1) Instalamos docker, ya que este nos va a permitir tener un
+entorno tipo sandbox donde podamos trabajar, aquí podremos
+escoger la distro a usar, la version del servicio que se 
+quiera y podremos compartir el contenedor si se desea, los 
+pasos para la instalación están en la pagina oficial de 
+docker.
+
+2) Entramos al contenedor.
+
+3) Instalamos nala, un manejador de paquetes similar al que
+viene por defecto (apt-get) pero este además de brindarnos
+más velocidad de descarga, instala de forma automatica las
+librerias y dependencias que pudieran ser requeridas.
+(apt-get install nala -y) y seleccionamos region y zona
+horaria.
+
+4) Hacemos la instalación de net-tools, esta herramienta
+nos permite verificar la dirección IP del servidor en la
+que se moverá la red (vease docker networking para cambiar
+a configuraciones deseadas, por defecto es bridged net)
+
+5) Instalamos postfix (nala install postfix) y escogemos la
+opción de local only (5), luego le asignamos un nombre a
+nuestro dominio y seguimos con la instalación. Al finalizar
+verificamos que el servicio esté corriendo con:
+service postfix status,
+si está apagado se usa service postix start
+
+6) Añadimos 2 usuarios para hacer la prueba de envios de
+mensajes: (# adduser pedro) (# adduser pablo) y luego
+ingresamos como uno (su pedro)
+
+7) Hacemos una prueba con telnet para verificar el que
+el servicio esté funcionando de forma correcta. Instalar
+telnet si es necesario (nala install telnet).
+	telnel localhost 25
+	ehlo localhost
+	mail from: pablo@localhost
+	rcpt to: pedro@localhost
+	data
+	subject: prueba
+	esta es una prueba.
+	.
+	quit
+Al salir, deberíamos tener un mensaje en el prompt que
+diga "you have mail in /var/mail/pedro"
+
+8) Instalamos dovecot:
+	nala install dovecot-imapd dovecot-pop3d
+	service dovecot status
+	service dovecot start
+
+9) Instalamos bsd-mailx para que gestione nuestro envio
+de correos por medio de la terminal. Una vez instalado
+hacemos el comando "mail" para revisar nuestro correo y
+pulsamos el numero del correo que queramos leer, o se
+pulsa la letra Q para salir. Para enviar un correo se 
+usa el comando "mail user", luego se escribe la cabecera
+del correo y se pulsa enter. Luego se escribe el texto
+y al terminar se hace enter, se escribe un punto solo y
+se pulsa enter otra vez. Ahora en Cc es si quisieramos
+reenviar el correo a otro usuario, de ser así se 
+escribe user@localhost para reenviarlo, se pulsa enter
+y el correo habra sido enviado.
