@@ -64,3 +64,10 @@ se pulsa enter otra vez. Ahora en Cc es si quisieramos
 reenviar el correo a otro usuario, de ser así se 
 escribe user@localhost para reenviarlo, se pulsa enter
 y el correo habra sido enviado.
+
+10) Instalamos el servidor apache "nala install apache2"
+
+11) vamos a /etc/www/html y modificamos el archivo 
+index.html para añadir nuestra propia pagina web.
+
+12) intento openssh
