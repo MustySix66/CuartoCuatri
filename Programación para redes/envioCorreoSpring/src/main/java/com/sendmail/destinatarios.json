@@ -1,0 +1,20 @@
+{
+    "destinatarios": [
+        {
+            "nombre": "Alejandro Hernandez",
+            "correo": "hernandezxa412@gmail.com",
+            "genero": "masculino"
+        },
+        {
+            "nombre": "Valeria Gonzalez",
+            "correo": "valeriadianaglz@gmail.com",
+            "genero": "femenino"
+        },
+        {
+            "nombre": "Kevin Andrade",
+            "correo": "kevinandrade259@gmail.com",
+            "genero": "masculino"
+        }
+    ],
+    "genero": "masculino"
+}
