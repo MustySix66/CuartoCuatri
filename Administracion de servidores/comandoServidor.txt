@@ -1,0 +1,46 @@
+-- comando para crear el contenedor:
+
+docker run -it -p 8080:80 -p 21:21 -p 25:25 -p 587:587 --name Servidor ubuntu bash
+
+dockerfile:
+
+Dockerfile básico
+
+# Usa Ubuntu como imagen base
+FROM ubuntu:latest
+
+# Establece el argumento para evitar que la instalación de paquetes solicite interacción manual
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Actualiza e instala paquetes necesarios (Apache2, vsftpd y Postfix)
+RUN apt-get update && \
+    apt-get install -y apache2 vsftpd postfix && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Exponer los puertos necesarios
+EXPOSE 80 21 25 587
+
+# Configura Apache2 para ejecutarse en el primer plano
+CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+Explicación:
+
+    FROM ubuntu:latest: Utiliza la imagen base de Ubuntu más reciente.
+    ARG DEBIAN_FRONTEND=noninteractive: Establece el entorno para que apt-get no solicite entrada manual durante la instalación de paquetes.
+    RUN apt-get update && apt-get install -y apache2 vsftpd postfix: Actualiza la lista de paquetes e instala Apache2, vsftpd y Postfix.
+    EXPOSE 80 21 25 587: Expone los puertos que se usarán (80 para Apache, 21 para FTP, 25 y 587 para SMTP).
+    CMD ["apache2ctl", "-D", "FOREGROUND"]: Ejecuta Apache2 en el primer plano para que el contenedor se mantenga activo.
+
+Cómo construir y ejecutar el contenedor:
+
+    Guarda el Dockerfile en un directorio.
+    Construye la imagen:
+
+docker build -t mi_servidor .
+
+Ejecuta el contenedor:
+
+    docker run -d -p 8080:80 -p 21:21 -p 25:25 -p 587:587 --name Servidor mi_servidor
+
+Este Dockerfile creará una imagen con Apache2, vsftpd y Postfix instalados, y mantendrá el contenedor en ejecución mediante Apache2. Si deseas que otros servicios, como vsftpd y Postfix, también permanezcan activos o sean configurados de forma personalizada, necesitarás agregar configuraciones adicionales al Dockerfile y posibles scripts de inicio.

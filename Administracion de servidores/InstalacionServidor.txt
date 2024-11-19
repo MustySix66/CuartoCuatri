@@ -7,6 +7,18 @@ quiera y podremos compartir el contenedor si se desea, los
 pasos para la instalación están en la pagina oficial de 
 docker.
 
+docker run -it -p 8080:80 -p 21:21 -p 25:25 -p 587:587 --name Servidor ubuntu bash
+docker run -d \
+  -p 8080:80 \         # Mapea el puerto 80 del contenedor (Apache2) al puerto 8080 de tu máquina anfitriona.
+  -p 21:21 \          # Mapea el puerto 21 del contenedor (vsftpd).
+  -p 25:25 \          # Mapea el puerto 25 del contenedor (SMTP de Postfix).
+  -p 587:587 \        # Mapea el puerto 587 del contenedor (SMTP seguro de Postfix, si lo usas).
+  --name mi_contenedor \
+  nombre_de_la_imagen bash
+
+docker start servidor
+docker exec -it Servidor bash
+
 2) Entramos al contenedor.
 
 3) Instalamos nala, un manejador de paquetes similar al que
@@ -23,8 +35,9 @@ a configuraciones deseadas, por defecto es bridged net)
 
 5) Instalamos postfix (nala install postfix) y escogemos la
 opción de local only (5), luego le asignamos un nombre a
-nuestro dominio y seguimos con la instalación. Al finalizar
-verificamos que el servicio esté corriendo con:
+nuestro dominio (no olvidarlo, ya que es de suma 
+importancia) y seguimos con la instalación. 
+Al finalizar verificamos que el servicio esté corriendo:
 service postfix status,
 si está apagado se usa service postix start
 
@@ -37,8 +50,8 @@ el servicio esté funcionando de forma correcta. Instalar
 telnet si es necesario (nala install telnet).
 	telnel localhost 25
 	ehlo localhost
-	mail from: pablo@localhost
-	rcpt to: pedro@localhost
+	mail from: pablo@{nombre de servidor}
+	rcpt to: pedro@{nombre de servidor}
 	data
 	subject: prueba
 	esta es una prueba.
@@ -56,24 +69,28 @@ diga "you have mail in /var/mail/pedro"
 de correos por medio de la terminal. Una vez instalado
 hacemos el comando "mail" para revisar nuestro correo y
 pulsamos el numero del correo que queramos leer, o se
-pulsa la letra Q para salir. Para enviar un correo se 
-usa el comando "mail user", luego se escribe la cabecera
-del correo y se pulsa enter. Luego se escribe el texto
-y al terminar se hace enter, se escribe un punto solo y
-se pulsa enter otra vez. Ahora en Cc es si quisieramos
-reenviar el correo a otro usuario, de ser así se 
-escribe user@localhost para reenviarlo, se pulsa enter
-y el correo habra sido enviado.
+pulsa la letra Q para salir. 
+Para enviar un correo se usa el comando "mail user", 
+luego se escribe la cabecera del correo y se pulsa enter.
+Luego se escribe el texto y al terminar se hace enter,
+se escribe un punto solo y se pulsa enter otra vez.
+Ahora en Cc es si quisieramos reenviar el correo a otro
+usuario, de ser así se escribe:
+{nombre user}@localhost (esta vez si va localhost)
+para reenviarlo, se pulsa enter y el correo habra sido
+enviado.
 
 10) Instalamos el servidor apache "nala install apache2"
 
-11) vamos a /etc/www/html y modificamos el archivo 
+11) vamos a /var/www/html y modificamos el archivo 
 index.html para añadir nuestra propia pagina web.
+No olvidemos hacer service apache2 start. Para probar
+que nuestro servicio esté activo.
 
 12) Procedemos a la instalación de vsftpd (nala install
 vsftpd) y esperamos a que se instale, luego entramos al
 path con nuestro editor de texto 
-(sudo nano /etc/vsftpd.conf) y agregamos las siguientes
+(sudo nano /etc/vsftpd.conf) y habilitamos las siguientes
 lineas:
 	-listen=NO
 	-listen_ipv6=YES
